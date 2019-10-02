@@ -1,0 +1,8 @@
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="text" name="token">
+    <input type="submit">
+</form>
+{% for x in all_customer %}
+<a href="/distribute/{{x.token}}"> {{x.token}} {{x.name}} </a><br/>
+{% endfor %}

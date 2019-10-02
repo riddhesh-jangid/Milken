@@ -1,0 +1,179 @@
+<script>
+    total_amount = 0;
+    total_money = 0;
+    function payt(){
+      val = prompt("PIN", "");
+      val = Number(val);
+      if (val=={{owner_object.pin}})
+      {
+        amount = prompt("Amount","0");
+        amount = Number(amount);
+        if (amount > 0)
+        {
+         document.getElementById("pmoney").value = parseFloat(amount);
+         document.getElementById("ptoken").value = {{customer_object.token}};
+         vform = document.getElementById("pform");
+         vform.submit();
+        }
+        else
+        {
+         vform = document.getElementById("pform");
+         vform.setAttribute("action","");
+        }
+      }
+      else
+      {
+        alert("Wrong Pin");
+        vform = document.getElementById("pform");
+        vform.setAttribute("action","");
+      }
+    }
+    function conf(){
+      val = confirm("Do you want to continue?");
+      if (val == true)
+       {
+         document.getElementById("damount").value = total_amount;
+         document.getElementById("dmoney").value = total_money;
+         document.getElementById("dtoken").value = {{customer_object.token}};
+         vform = document.getElementById("dform");
+         vform.submit();
+       }
+       else
+       {
+         vform = document.getElementById("dform");
+         vform.setAttribute("action","");
+       }
+    }
+    function increment250(){
+      total_amount = total_amount + 0.25;
+      document.getElementById("total").innerHTML = total_amount+" ml";
+      q1 = document.getElementsByName("money")[0];
+      q2 = document.getElementsByName("money")[1];
+      q3 = document.getElementsByName("money")[2];
+      if (q1.checked)
+        addL();
+      else if (q2.checked)
+        addM();
+      else
+        addH();
+    }
+    function increment500(){
+      total_amount = total_amount + .50;
+      document.getElementById("total").innerHTML = total_amount+" ml";
+      q1 = document.getElementsByName("money")[0];
+      q2 = document.getElementsByName("money")[1];
+      q3 = document.getElementsByName("money")[2];
+      if (q1.checked)
+        addL();
+      else if (q2.checked)
+        addM();
+      else
+        addH();
+    }
+    function increment1000(){
+      total_amount = total_amount + 1;
+      document.getElementById("total").innerHTML = total_amount+" ml";
+      q1 = document.getElementsByName("money")[0];
+      q2 = document.getElementsByName("money")[1];
+      q3 = document.getElementsByName("money")[2];
+      if (q1.checked)
+        addL();
+      else if (q2.checked)
+        addM();
+      else
+        addH();
+    }
+    function increment1500(){
+      total_amount = total_amount + 1.50;
+      document.getElementById("total").innerHTML = total_amount+" ml";
+      q1 = document.getElementsByName("money")[0];
+      q2 = document.getElementsByName("money")[1];
+      q3 = document.getElementsByName("money")[2];
+      if (q1.checked)
+        addL();
+      else if (q2.checked)
+        addM();
+      else
+        addH();
+    }
+    function increment2000(){
+      total_amount = total_amount + 2;
+      document.getElementById("total").innerHTML = total_amount+" ml";
+      q1 = document.getElementsByName("money")[0];
+      q2 = document.getElementsByName("money")[1];
+      q3 = document.getElementsByName("money")[2];
+      if (q1.checked)
+        addL();
+      else if (q2.checked)
+        addM();
+      else
+        addH();
+    }
+    function incrementR(){
+      total_amount = 0;
+      document.getElementById("total").innerHTML = total_amount+" ml";
+     }
+    function addL(){
+      total_money = (30 * total_amount);
+      document.getElementById("money").innerHTML = total_money+" Rs";
+    }
+    function addM(){
+      total_money = (40 * total_amount);
+      document.getElementById("money").innerHTML = total_money+" Rs";
+    }
+    function addH(){
+      total_money = (50 * total_amount);
+      document.getElementById("money").innerHTML = total_money+" Rs";
+    }
+</script>
+{{customer_object.name}}
+<p>Remaining = {{statistics.remaining}}</p>
+<button onclick=increment250()>250ml</button>
+<button onclick=increment500()>500ml</button>
+<button onclick=increment1000()>1l</button><hr/>
+<button onclick=increment1500()>1500ml</button>
+<button onclick=increment2000()>2l</button>
+<button onclick=incrementR()>R</button><hr/>
+<p id="total">0ml</p>
+<hr/>
+
+{% if customer_object.selection == 'L' %}
+  <form>
+    <input type="radio" value="L" name ="money" onclick="addL()" checked>L<br/>
+    <input type="radio" value="M" name ="money" onclick="addM()">M<br/>
+    <input type="radio" value="H" name ="money" onclick="addH()">H<br/>
+  </form>
+{% endif %}
+
+{% if customer_object.selection == 'M' %}
+  <form>
+    <input type="radio" value="L" name ="money" onclick="addL()">L<br/>
+    <input type="radio" value="M" name ="money" onclick="addM()" checked>M<br/>
+    <input type="radio" value="H" name ="money" onclick="addH()">H<br/>
+  </form>
+{% endif %}
+
+{% if customer_object.selection == 'H' %}
+  <form>
+    <input type="radio" value="L" name ="money" onclick="addL()">L<br/>
+    <input type="radio" value="M" name ="money" onclick="addM()">M<br/>
+    <input type="radio" value="H" name ="money" onclick="addH()" checked>H<br/>
+  </form>
+{% endif %}
+
+<p id="money">0Rs</p>
+
+<form action="/distribute_save/" method="post" id="dform">
+  {% csrf_token %}
+  <input type="hidden" name="amount" value="0" id="damount" step="any">
+  <input type="hidden" name="money" value="0" id="dmoney" step="any">
+  <input type="hidden" name="token" value="0" id="dtoken">
+  <button onclick="conf()">Confirm</button>
+</form>
+
+<form action="/payment_save/" method="post" id="pform">
+  {% csrf_token %}
+  <input type="hidden" name="money" value="0" id="pmoney" step="any">
+  <input type="hidden" name="token" value="0" id="ptoken">
+  <button onclick="payt()">Payment</button>
+</form>

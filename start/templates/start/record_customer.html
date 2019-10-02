@@ -1,0 +1,10 @@
+{{customer_object.name}}
+<hr/>
+<p>Remaning = {{statistics.remaining}}</p>
+<p>Last Payment = {{statistics.last_payment}}</p>
+<p>Last Payment Date = {{statistics.last_payment_date}}</p>
+<hr/>
+{% for x in distribution %}
+<p>{{x.date}} | Money = {{x.money}}</p><br/>
+{% endfor %}
+

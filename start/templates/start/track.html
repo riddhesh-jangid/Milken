@@ -1,0 +1,22 @@
+<style>
+    #yellow
+    {
+      color : yellow;
+    }
+    #green
+    {
+      color : green;
+    }
+</style>
+{% for x in track_objects %}
+{% if x.bool == False %}
+      <div id="yellow">
+        <h3>{{x.customer.token}} -> {{x.customer.name}}</h3>
+      </div>
+{% endif%}
+{% if x.bool == True %}
+      <div id="green">
+        <h3>{{x.customer.token}} -> {{x.customer.name}}</h3>
+      </div>
+{% endif%}
+{% endfor %}
